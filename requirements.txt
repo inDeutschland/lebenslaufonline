@@ -1,0 +1,9 @@
+# step 1: Install Flask
+flask
+# step 3: Install Flask-SQLAlchemy
+flask-sqlalchemy
+# step 11: i18nitialize Flask-Babel
+flask-babel==4.0.0
+deep_translator
+
+

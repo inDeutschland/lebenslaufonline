@@ -1,0 +1,113 @@
+{% extends "base.html.j2" %}
+
+{% block title %}{{ _('Edit CSS Settings') }}{% endblock %}
+
+{% block content %}
+    <h1>🎨 {{ _('Resume Style Settings') }}</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+
+        <hr>
+        <h2>🔍 {{ _('Live Preview') }}</h2>
+
+        <div id="preview-box" style="padding: 20px; border: 1px dashed #aaa;">
+            <h2 id="preview-title">{{ _('Example Title') }}</h2>
+            <p id="preview-paragraph">{{ _('This is a sample section with example content.') }}</p>
+        </div>
+
+        <!-- section_title_css -->
+        <h3>{{ _('section_title_css') }}</h3>
+
+        <label>📏 {{ _('Font Size') }}:</label>
+        <select name="section_title_css_font_size">
+            {% for size in ["16px", "18px", "20px", "22px", "24px"] %}
+                <option value="{{ size }}" {% if section_title_css_data["font-size"] == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>🎨 {{ _('Color') }}:</label>
+        <input type="color" name="section_title_css_color" value="{{ section_title_css_data['color'] }}">
+
+        <br><br>
+
+        <label>🔠 {{ _('Font Weight') }}:</label>
+        <select name="section_title_css_weight">
+            {% for w in ["normal", "bold", "lighter"] %}
+                <option value="{{ w }}" {% if section_title_css_data["font-weight"] == w %}selected{% endif %}>{{ w.capitalize() }}</option>
+            {% endfor %}
+        </select>
+
+        <hr>
+
+        <!-- paragraph_css -->
+        <h3>{{ _('paragraph_css') }}</h3>
+
+        <label>📏 {{ _('Font Size') }}:</label>
+        <select name="paragraph_css_font_size">
+            {% for size in ["12px", "14px", "16px", "18px", "20px"] %}
+                <option value="{{ size }}" {% if paragraph_css_data["font-size"] == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>🎨 {{ _('Color') }}:</label>
+        <input type="color" name="paragraph_css_color" value="{{ paragraph_css_data['color'] }}">
+
+        <hr>
+
+        <!-- Other settings -->
+        {% for setting in settings %}
+            {% if setting.key != "section_title_css" and setting.key != "paragraph_css" %}
+                <h3>{{ _(setting.key) }}</h3>
+                <textarea name="{{ setting.key }}" rows="4" cols="80">{{ setting.value }}</textarea>
+                <hr>
+            {% endif %}
+        {% endfor %}
+
+        <button type="submit" name="action" value="save">💾 {{ _('Save Changes') }}</button>
+        <button type="submit" name="action" value="save_and_preview">💾 {{ _('Save & Show Preview') }}</button>
+
+    </form>
+
+    <script>
+    function updatePreview() {
+        const title = document.getElementById("preview-title");
+        const titleFontSize = document.querySelector("select[name='section_title_css_font_size']");
+        const titleColor = document.querySelector("input[name='section_title_css_color']");
+        const titleWeight = document.querySelector("select[name='section_title_css_weight']");
+        if (title && titleFontSize && titleColor && titleWeight) {
+            title.style.fontSize = titleFontSize.value;
+            title.style.color = titleColor.value;
+            title.style.fontWeight = titleWeight.value;
+        }
+
+        const para = document.getElementById("preview-paragraph");
+        const paraFontSize = document.querySelector("select[name='paragraph_css_font_size']");
+        const paraColor = document.querySelector("input[name='paragraph_css_color']");
+        if (para && paraFontSize && paraColor) {
+            para.style.fontSize = paraFontSize.value;
+            para.style.color = paraColor.value;
+        }
+
+        const bodyFont = document.querySelector("select[name='body_font']");
+        const previewBox = document.getElementById("preview-box");
+        if (bodyFont && previewBox) {
+            previewBox.style.fontFamily = bodyFont.value;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("select, input[type='color']").forEach(el => {
+            el.addEventListener("input", updatePreview);
+        });
+        updatePreview();
+    });
+    </script>
+{% endblock %}
