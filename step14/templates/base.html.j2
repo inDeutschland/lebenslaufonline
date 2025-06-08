@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ _('Resume Project') }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resume.css') }}">
+</head>
+<body style="{{ body_font | default('font-family: Arial, sans-serif;') }}">
+
+    {% include 'partials/navbar.html.j2' %}
+
+    <main style="padding: 20px;">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/footer.html.j2' %}
+
+</body>
+</html>
