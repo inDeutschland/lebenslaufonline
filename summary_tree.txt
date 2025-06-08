@@ -1,0 +1,56 @@
+📁 lebenslaufonline/
+├── 📁 instance/
+│   └── lebenslauf.db
+├── 📁 step14/
+│   ├── 📁 config/
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   ├── 📁 logic/
+│   │   ├── __init__.py
+│   │   └── builder.py
+│   ├── 📁 models/
+│   │   ├── __init__.py
+│   │   └── models.py
+│   ├── 📁 routes/
+│   │   ├── __init__.py
+│   │   ├── admin_routes.py
+│   │   ├── main_routes.py
+│   │   └── public_routes.py
+│   ├── 📁 static/
+│   │   └── 📁 css/
+│   │       └── resume.css
+│   ├── 📁 templates/
+│   │   ├── 📁 admin/
+│   │   │   ├── sections.html.j2
+│   │   │   └── settings.html.j2
+│   │   ├── 📁 partials/
+│   │   │   ├── footer.html.j2
+│   │   │   └── navbar.html.j2
+│   │   ├── 📁 public/
+│   │   │   └── resume.html.j2
+│   │   ├── base.html.j2
+│   │   └── home.html.j2
+│   ├── 📁 tools/
+│   │   └── init_db.py
+│   ├── 📁 translations/
+│   │   ├── 📁 ar/
+│   │   │   └── 📁 LC_MESSAGES/
+│   │   │       ├── messages.mo
+│   │   │       └── messages.po
+│   │   └── 📁 de/
+│   │       └── 📁 LC_MESSAGES/
+│   │           ├── messages.mo
+│   │           └── messages.po
+│   ├── README_step14.md
+│   ├── README_step14_ar.md
+│   ├── __init__.py
+│   ├── babel.cfg
+│   ├── extensions.py
+│   ├── i18n_runtime.py
+│   ├── i18n_translate.py
+│   └── run.py
+├── .gitignore
+├── LICENSE
+├── README.md
+├── app.py
+└── requirements.txt
