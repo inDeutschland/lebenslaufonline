@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from ..models.models import db, Section, Setting  
+from ..models.models import db, Section, Setting, ResumeSection, ResumeParagraph, ResumeField
 from flask_babel import force_locale
 from ..i18n_runtime import get_locale
+
 
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -127,3 +128,15 @@ def manage_settings():
             paragraph_css_data=paragraph_css_data,
             body_font_value=body_font_value
         )
+    
+
+
+@admin_bp.route("/builder")
+def resume_builder():
+    sections = ResumeSection.query.order_by(ResumeSection.order).all()
+    return render_template(
+        "admin/resume_builder.html.j2",
+        sections=sections
+        )
+
+

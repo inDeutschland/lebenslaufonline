@@ -18,6 +18,7 @@ with app.app_context():
         "Berufserfahrung", "Qualifikationen", "Technische Fähigkeiten",
         "Sprachen", "Projekte", "Links", "Interessen"
     ]
+    
 
     for title in sections:
         db.session.add(Section(title=title, content=""))

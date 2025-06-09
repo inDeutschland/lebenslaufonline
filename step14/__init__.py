@@ -1,5 +1,5 @@
 from flask import Flask
-from .models.models import db, Section
+from .models.models import db, Section , Setting, ResumeSection, ResumeParagraph, ResumeField, NavigationLink, LanguageOption
 from .routes.admin_routes import admin_bp
 from .routes.public_routes import public_bp
 from .routes.main_routes import main_bp
@@ -39,11 +39,23 @@ def create_app():
         if not os.path.exists(db_path):
             db.create_all()
             insert_initial_sections()
+            insert_initial_navigation()
+            insert_initial_languages()
+
 
     @app.before_request
     def log_locale_info():
         print("🌐 Requested locale:", get_locale())
         print("📦 Babel directory:", app.config.get('BABEL_TRANSLATION_DIRECTORIES'))
+
+
+    @app.context_processor
+    def inject_globals():
+        from .models.models import NavigationLink, LanguageOption
+        nav_links = NavigationLink.query.order_by(NavigationLink.order).all()
+        langs = LanguageOption.query.order_by(LanguageOption.order).all()
+        return dict(nav_links=nav_links, langs=langs)
+
 
     return app
 
@@ -61,3 +73,32 @@ def insert_initial_sections():
     db.session.commit()
     print("✅ Sections inserted.")
 
+
+
+def insert_initial_navigation():
+    if NavigationLink.query.count() == 0:
+        nav_items = [
+            {"label": "Home", "icon": "🏠", "endpoint": "main.home", "order": 1},
+            {"label": "Sections", "icon": "📝", "endpoint": "admin.manage_sections", "order": 2},
+            {"label": "Settings", "icon": "🎨", "endpoint": "admin.manage_settings", "order": 3},
+            {"label": "Resume", "icon": "📄", "endpoint": "public.resume", "order": 4},
+            {"label": "Builder", "icon": "🧱", "endpoint": "admin.resume_builder", "order": 5}
+        ]
+        for item in nav_items:
+            link = NavigationLink(**item)
+            db.session.add(link)
+        db.session.commit()
+        print("✅ Navigation links inserted.")
+
+
+def insert_initial_languages():
+    if LanguageOption.query.count() == 0:
+        langs = [
+            {"code": "ar", "name": "العربية", "order": 1},
+            {"code": "en", "name": "English", "order": 2},
+            {"code": "de", "name": "Deutsch", "order": 3}
+        ]
+        for lang in langs:
+            db.session.add(LanguageOption(**lang))
+        db.session.commit()
+        print("✅ Languages inserted.")

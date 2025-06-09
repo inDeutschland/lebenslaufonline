@@ -1,12 +1,18 @@
 <nav style="background: #333; color: white; padding: 10px 20px;">
-    <a href="{{ url_for('main.home') }}" style="color: white; margin-right: 20px;">🏠 {{ _('Home') }}</a>
-    <a href="{{ url_for('admin.manage_sections') }}" style="color: white; margin-right: 20px;">📝 {{ _('Sections') }}</a>
-    <a href="{{ url_for('admin.manage_settings') }}" style="color: white; margin-right: 20px;">🎨 {{ _('Settings') }}</a>
-    <a href="{{ url_for('public.resume') }}" style="color: white; margin-right: 20px;">📄 {{ _('Resume') }}</a>
+{% for link in nav_links %}
+    {% if link.is_visible %}
+        <a href="{{ url_for(link.endpoint) }}" style="color: white; margin-right: 20px;">
+            {{ link.icon }} {{ _(link.label) }}
+        </a>
+    {% endif %}
+{% endfor %}
 
-    <span style="float: right;">
-        <a href="{{ url_for('main.set_language', lang='ar') }}" style="color: white; margin-left: 10px;">🇸🇦</a>
-        <a href="{{ url_for('main.set_language', lang='en') }}" style="color: white; margin-left: 10px;">🇺🇸</a>
-        <a href="{{ url_for('main.set_language', lang='de') }}" style="color: white; margin-left: 10px;">🇩🇪</a>
-    </span>
+<span style="float: right;">
+    {% for lang in langs if lang.is_visible %}
+        <a href="{{ url_for('main.set_language', lang=lang.code) }}" style="color: white; margin-left: 10px;">
+            {{ lang.code.upper() }}
+        </a>
+    {% endfor %}
+</span>
+
 </nav>

@@ -1,0 +1,27 @@
+{% extends "base.html.j2" %}
+
+{% block title %}{{ _('Interactive Resume Builder') }}{% endblock %}
+
+{% block content %}
+<h1>🧱 {{ _('Resume Builder') }}</h1>
+
+{% for section in sections %}
+    <div style="border: 1px solid #ccc; margin-bottom: 20px; padding: 15px;">
+        <h2>{{ section.title }}</h2>
+
+        {% for paragraph in section.paragraphs %}
+            <div style="margin-left: 20px;">
+                <h3>📄 Paragraph ({{ paragraph.type }})</h3>
+                <ul>
+                    {% for field in paragraph.fields %}
+                        {% if field.is_visible and field.value.strip() %}
+                            <li><strong>{{ field.key }}:</strong> {{ field.value }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+{% endblock %}

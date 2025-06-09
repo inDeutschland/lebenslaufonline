@@ -1,0 +1,1447 @@
+Directory structure:
+└── indeutschland-lebenslaufonline/
+    ├── README.md
+    ├── app.py
+    ├── gitingest.txt
+    ├── LICENSE
+    ├── requirements.txt
+    ├── summary_tree.txt
+    └── step14/
+        ├── __init__.py
+        ├── babel.cfg
+        ├── extensions.py
+        ├── i18n_runtime.py
+        ├── i18n_translate.py
+        ├── README_step14.md
+        ├── README_step14_ar.md
+        ├── run.py
+        ├── config/
+        │   ├── __init__.py
+        │   └── settings.py
+        ├── logic/
+        │   ├── __init__.py
+        │   └── builder.py
+        ├── models/
+        │   ├── __init__.py
+        │   └── models.py
+        ├── routes/
+        │   ├── __init__.py
+        │   ├── admin_routes.py
+        │   ├── main_routes.py
+        │   └── public_routes.py
+        ├── static/
+        │   └── css/
+        │       └── resume.css
+        ├── templates/
+        │   ├── base.html.j2
+        │   ├── home.html.j2
+        │   ├── admin/
+        │   │   ├── sections.html.j2
+        │   │   └── settings.html.j2
+        │   ├── partials/
+        │   │   ├── footer.html.j2
+        │   │   └── navbar.html.j2
+        │   └── public/
+        │       └── resume.html.j2
+        ├── tools/
+        │   └── init_db.py
+        └── translations/
+            ├── ar/
+            │   └── LC_MESSAGES/
+            │       └── messages.po
+            └── de/
+                └── LC_MESSAGES/
+                    └── messages.po
+
+================================================
+FILE: README.md
+================================================
+# lebenslauf
+
+
+================================================
+FILE: app.py
+================================================
+import sqlite3
+
+# الاتصال بقاعدة البيانات
+conn = sqlite3.connect("flask_app.db")
+cur = conn.cursor()
+
+# تنفيذ الاستعلام مع الترتيب حسب التصنيف أولاً ثم اسم الوكيل
+cur.execute("""
+SELECT 
+    attributes.id,
+    attributes.name AS attribute_name,
+    categories.name AS category_name
+FROM 
+    attributes
+JOIN 
+    categories
+ON 
+    attributes.category_id = categories.id
+ORDER BY 
+    category_name, attribute_name
+""")
+
+# جلب النتائج
+results = cur.fetchall()
+
+# طباعة رأس الجدول
+print(f"{'ID':<4} {'Attribute':<30} {'Category'}")
+print("-" * 60)
+
+# طباعة النتائج
+for id, attribute, category in results:
+    print(f"{id:<4} {attribute:<30} {category}")
+
+# إغلاق الاتصال
+conn.close()
+
+
+
+================================================
+FILE: gitingest.txt
+================================================
+
+
+
+================================================
+FILE: LICENSE
+================================================
+MIT License
+
+Copyright (c) 2025 inDeutschland
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+================================================
+FILE: requirements.txt
+================================================
+# step 1: Install Flask
+flask
+# step 3: Install Flask-SQLAlchemy
+flask-sqlalchemy
+# step 11: i18nitialize Flask-Babel
+flask-babel==4.0.0
+deep_translator
+
+
+
+
+
+================================================
+FILE: summary_tree.txt
+================================================
+📁 lebenslaufonline/
+├── 📁 instance/
+│   └── lebenslauf.db
+├── 📁 step14/
+│   ├── 📁 config/
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   ├── 📁 logic/
+│   │   ├── __init__.py
+│   │   └── builder.py
+│   ├── 📁 models/
+│   │   ├── __init__.py
+│   │   └── models.py
+│   ├── 📁 routes/
+│   │   ├── __init__.py
+│   │   ├── admin_routes.py
+│   │   ├── main_routes.py
+│   │   └── public_routes.py
+│   ├── 📁 static/
+│   │   └── 📁 css/
+│   │       └── resume.css
+│   ├── 📁 templates/
+│   │   ├── 📁 admin/
+│   │   │   ├── sections.html.j2
+│   │   │   └── settings.html.j2
+│   │   ├── 📁 partials/
+│   │   │   ├── footer.html.j2
+│   │   │   └── navbar.html.j2
+│   │   ├── 📁 public/
+│   │   │   └── resume.html.j2
+│   │   ├── base.html.j2
+│   │   └── home.html.j2
+│   ├── 📁 tools/
+│   │   └── init_db.py
+│   ├── 📁 translations/
+│   │   ├── 📁 ar/
+│   │   │   └── 📁 LC_MESSAGES/
+│   │   │       ├── messages.mo
+│   │   │       └── messages.po
+│   │   └── 📁 de/
+│   │       └── 📁 LC_MESSAGES/
+│   │           ├── messages.mo
+│   │           └── messages.po
+│   ├── README_step14.md
+│   ├── README_step14_ar.md
+│   ├── __init__.py
+│   ├── babel.cfg
+│   ├── extensions.py
+│   ├── i18n_runtime.py
+│   ├── i18n_translate.py
+│   └── run.py
+├── .gitignore
+├── LICENSE
+├── README.md
+├── app.py
+└── requirements.txt
+
+
+================================================
+FILE: step14/__init__.py
+================================================
+from flask import Flask
+from .models.models import db, Section
+from .routes.admin_routes import admin_bp
+from .routes.public_routes import public_bp
+from .routes.main_routes import main_bp
+from .extensions import babel  # هذا يجب أن يأتي بعد Flask
+from .i18n_runtime import init_i18n, get_locale
+import os
+
+
+
+
+def create_app():
+
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object("step14.config.settings.Config")
+    app.config['LANGUAGES'] = ['de', 'en', 'ar']
+    translations_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'translations'))
+    app.config['BABEL_TRANSLATION_DIRECTORIES'] = translations_path
+    app.debug = True
+
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    app.logger.setLevel(logging.DEBUG)
+
+    os.makedirs(app.instance_path, exist_ok=True)
+
+    db.init_app(app)
+    babel.init_app(app)
+    babel.locale_selector_func = get_locale
+    init_i18n(app)
+
+    app.register_blueprint(main_bp)
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(public_bp)
+
+    with app.app_context():
+        db_path = os.path.join(app.instance_path, 'lebenslauf.db')
+        if not os.path.exists(db_path):
+            db.create_all()
+            insert_initial_sections()
+
+    @app.before_request
+    def log_locale_info():
+        print("🌐 Requested locale:", get_locale())
+        print("📦 Babel directory:", app.config.get('BABEL_TRANSLATION_DIRECTORIES'))
+
+    return app
+
+
+def insert_initial_sections():
+    """إدخال الأقسام الأساسية تلقائيًا"""
+    default_sections = [
+        "Summary", "Career Objective", "Experience", "Qualifications",
+        "Skills", "Languages", "Projects", "Links", "Interests"
+    ]
+    for idx, title in enumerate(default_sections, start=1):
+        print(f"➕ Adding section: {title}")
+        section = Section(order=idx, title=title, content="")
+        db.session.add(section)
+    db.session.commit()
+    print("✅ Sections inserted.")
+
+
+
+
+================================================
+FILE: step14/babel.cfg
+================================================
+[python: **.py]
+[jinja2: **/templates/**.html]
+extensions=jinja2.ext.do
+
+ignore_dirs = venv
+
+
+
+================================================
+FILE: step14/extensions.py
+================================================
+from flask_sqlalchemy import SQLAlchemy
+from flask_babel import Babel
+
+# ✅ إنشاء كائنات الامتدادات هنا
+db = SQLAlchemy()
+babel = Babel()
+
+
+
+
+================================================
+FILE: step14/i18n_runtime.py
+================================================
+from flask import session, request
+from flask_babel import gettext
+from .extensions import babel
+
+# ✅ دالة موحدة واحترافية
+def get_locale():
+    # 1. إذا تم تمرير اللغة في الرابط (مثلاً عند أول زيارة)
+    if "lang" in request.args:
+        lang = request.args.get("lang")
+        if lang in ['de', 'en', 'ar']:
+            session['lang'] = lang  # خزّنها في الجلسة
+            return lang
+
+    # 2. إذا تم اختيار لغة مسبقًا
+    if "lang" in session:
+        return session['lang']
+
+    # 3. fallback للغة المتصفح
+    return request.accept_languages.best_match(['de', 'en', 'ar'])
+
+def init_i18n(app):
+    babel.locale_selector_func = get_locale
+
+    @app.context_processor
+    def inject_get_locale():
+        return dict(get_locale=get_locale)
+
+    @app.context_processor
+    def inject_translation():
+        return dict(gettext=gettext)
+
+
+
+================================================
+FILE: step14/i18n_translate.py
+================================================
+import os
+import re
+import subprocess
+from pathlib import Path
+from flask import request
+from deep_translator import GoogleTranslator
+from .extensions import babel
+
+
+
+
+# ----------- إعدادات المسارات ----------
+STEP_DIR = Path(__file__).resolve().parent
+BABEL_CFG = os.path.join(STEP_DIR, "babel.cfg")
+OUTPUT_DIR = STEP_DIR / "translations"
+POT_FILE = STEP_DIR / "messages.pot"
+LANGUAGES = ["ar", "de"]
+
+# ----------------------------------------
+
+
+def fix_placeholders(msgid, translated):
+    patterns = [
+        re.compile(r"%\([^)]+\)s"),    # مثل %(name)s
+        re.compile(r"\{[^}]+\}")       # مثل {value}
+    ]
+    for pattern in patterns:
+        placeholders = pattern.findall(msgid)
+        for ph in placeholders:
+            corrupted_regex = re.compile(rf"%\s*\(\s*{re.escape(ph[2:-2])}\s*\)\s*s", re.IGNORECASE)
+            translated = corrupted_regex.sub('', translated)
+            if ph not in translated:
+                print(f"⚠️ Missing placeholder {ph} in translation → fixing.")
+                translated = translated.strip()
+                if not translated.endswith(ph):
+                    translated += f" {ph}"
+    return translated
+
+
+def read_pot_file(path):
+    return path.read_text(encoding="utf-8").splitlines()
+
+
+def init_translators(langs):
+    return {lang: GoogleTranslator(source='en', target=lang) for lang in langs}
+
+
+def add_po_header(lines, lang):
+    header = [
+        'msgid ""',
+        'msgstr ""',
+        '"Content-Type: text/plain; charset=UTF-8\\n"',
+        f'"Language: {lang}\\n"',
+        ""
+    ]
+    return header + lines
+
+
+def is_english(text):
+    return re.search(r'[a-zA-Z]', text) and not re.search(r'[ء-ي]', text)
+
+def translate_lines(lines, translators):
+    msgid = None
+    translated_content = {lang: [] for lang in translators}
+
+    for line in lines:
+        if 'fuzzy' in line:
+            continue
+        if line.startswith('msgid '):
+            msgid_raw = line[6:].strip().strip('"')
+            if not is_english(msgid_raw):
+                msgid = None
+                for lang in translators:
+                    translated_content[lang].append(line)
+                    translated_content[lang].append('msgstr ""')
+                continue
+            msgid = msgid_raw
+            msgid = line[6:].strip().strip('"')
+            for lang in translators:
+                translated_content[lang].append(line)
+        elif line.strip() == 'msgstr ""' and msgid:
+            for lang, translator in translators.items():
+                try:
+                    translated = translator.translate(msgid)
+                    if not translated.strip():
+                        print(f"Warning [{lang}] Empty translation for: {msgid}")
+                    translated = fix_placeholders(msgid, translated)
+                    translated_content[lang].append(f'msgstr "{translated}"')
+                    print(f"Translated [{lang}] {msgid} → {translated}")
+                except Exception as e:
+                    translated_content[lang].append('msgstr ""')
+                    print(f"Error [{lang}] translating '{msgid}': {e}")
+            msgid = None
+        else:
+            for lang in translators:
+                translated_content[lang].append(line)
+    return translated_content
+
+
+def save_translations(translated_content, base_output_dir):
+    for lang, lines in translated_content.items():
+        lines = add_po_header(lines, lang)
+        path = Path(base_output_dir) / lang / "LC_MESSAGES" / "messages.po"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(lines), encoding="utf-8")
+        print(f"Saved [{lang}] to {path}")
+
+
+def generate_pot_file():
+    print("Extracting phrases to .pot file ...")
+    subprocess.run(["pybabel", "extract", "-F", BABEL_CFG, "-o", POT_FILE, STEP_DIR], check=True)
+
+
+def init_po_files(languages):
+    for lang in languages:
+        po_path = Path(OUTPUT_DIR) / lang / "LC_MESSAGES" / "messages.po"
+        if not po_path.exists():
+            print(f"Initializing file for [{lang}] ...")
+            subprocess.run(["pybabel", "init", "-i", POT_FILE, "-d", OUTPUT_DIR, "-l", lang], check=True)
+        else:
+            print(f"Translation file already exists for [{lang}]")
+
+
+def compile_translations():
+    try:
+        subprocess.run(["pybabel", "compile", "-d", OUTPUT_DIR], check=True)
+        print("✅ Compiled translations to .mo files.")
+    except subprocess.CalledProcessError as e:
+        print("❌ Error compiling .mo files:", e)
+
+
+def main():
+    generate_pot_file()
+    init_po_files(LANGUAGES)
+
+    if not Path(POT_FILE).exists():
+        print(f"{POT_FILE} not found after extraction.")
+        return
+
+    lines = read_pot_file(Path(POT_FILE))
+    translators = init_translators(LANGUAGES)
+    translated_content = translate_lines(lines, translators)
+    save_translations(translated_content, OUTPUT_DIR)
+    compile_translations()
+
+    if Path(POT_FILE).exists():
+        Path(POT_FILE).unlink()
+        print("🧹 Temporary messages.pot file deleted.")
+
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+================================================
+FILE: step14/README_step14.md
+================================================
+# 📄 README – step14: Language Management using `session` in Flask
+
+## 🎯 Goal:
+تنفيذ نظام احترافي متعدد اللغات يSupport التبديل بين العربية، الإنجليزية، والألمانية باستخدام `Flask-Babel` و`session`.
+
+---
+
+## ✅ Tasks Implemented:
+
+### 1. 1. Flask-Babel Setup:
+- - Activated `Flask-Babel` inside `create_app()`.
+- - Default locale set to اللغة الافتراضية: `ar`.
+- - Translations directory configured: مسار الترجمة: `step14/translations`.
+
+---
+
+### 2. 2. Custom `get_locale()` Function:
+First checks من `request.args['lang']` (لتسجيل الدخول الأول أو المشاركة)، then from `session['lang']`، then fallback to `request.accept_languages`.
+
+```python
+def get_locale():
+    if "lang" in request.args:
+        lang = request.args.get("lang")
+        if lang in ['de', 'en', 'ar']:
+            session['lang'] = lang
+            return lang
+    if "lang" in session:
+        return session['lang']
+    return request.accept_languages.best_match(['de', 'en', 'ar'])
+```
+
+---
+
+### 3. 3. Language Switch Route:
+
+```python
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    session['lang'] = lang
+    return redirect(request.referrer or url_for('main.home'))
+```
+
+---
+
+### 4. 4. Using `force_locale()` with templates in every route يستخدم `render_template()`:
+
+```python
+with force_locale(get_locale()):
+    return render_template("...")
+```
+
+---
+
+### 5. 5. Language Switch HTML (in `navbar.html.j2`:
+
+```html
+<span style="float: right;">
+    <a href="{{ url_for('main.set_language', lang='ar') }}">🇸🇦</a>
+    <a href="{{ url_for('main.set_language', lang='en') }}">🇺🇸</a>
+    <a href="{{ url_for('main.set_language', lang='de') }}">🇩🇪</a>
+</span>
+```
+
+---
+
+### 6. 6. Integration with Jinja Templates:
+- استخدام `{{ _('Text') }}` in every النصوص القابلة للترجمة.
+- استخدام `{{ get_locale() }}` inside HTML لتعريف اللغة النشطة.
+
+---
+
+## 📌 Technical Notes:
+- الجلسة مشفّرة وstored في Cookie.
+- لا حاجة لإعادة تمرير اللغة in every رابط.
+- التبديل فوري، ويؤثر على كل الصفحات.
+
+---
+
+## 🔮 Possible Future Enhancements:
+- Link language to authenticated user (تخزين في قاعدة البيانات).
+- Display selected language in generated PDF التوليدي.
+- Support Locale-specific formatting (مثل التاريخ والوقت).
+
+
+================================================
+FILE: step14/README_step14_ar.md
+================================================
+# 📄 README – step14: Language Management using `session` in Flask
+
+## 🎯 الهدف:
+تنفيذ نظام احترافي متعدد اللغات يدعم التبديل بين العربية، الإنجليزية، والألمانية باستخدام `Flask-Babel` و`session`.
+
+---
+
+## ✅ المهام المنفذة:
+
+### 1. إعداد Flask-Babel:
+- تم تفعيل `Flask-Babel` داخل `create_app()`.
+- تم تعيين اللغة الافتراضية: `ar`.
+- تم تعريف مسار الترجمة: `step14/translations`.
+
+---
+
+### 2. دالة `get_locale()` مخصصة:
+يتم أولًا التحقق من `request.args['lang']` (لتسجيل الدخول الأول أو المشاركة)، ثم من `session['lang']`، ثم Fallback إلى `request.accept_languages`.
+
+```python
+def get_locale():
+    if "lang" in request.args:
+        lang = request.args.get("lang")
+        if lang in ['de', 'en', 'ar']:
+            session['lang'] = lang
+            return lang
+    if "lang" in session:
+        return session['lang']
+    return request.accept_languages.best_match(['de', 'en', 'ar'])
+```
+
+---
+
+### 3. مسار تغيير اللغة:
+
+```python
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    session['lang'] = lang
+    return redirect(request.referrer or url_for('main.home'))
+```
+
+---
+
+### 4. استخدام `force_locale()` في كل route يستخدم `render_template()`:
+
+```python
+with force_locale(get_locale()):
+    return render_template("...")
+```
+
+---
+
+### 5. شيفرة تغيير اللغة في `navbar.html.j2`:
+
+```html
+<span style="float: right;">
+    <a href="{{ url_for('main.set_language', lang='ar') }}">🇸🇦</a>
+    <a href="{{ url_for('main.set_language', lang='en') }}">🇺🇸</a>
+    <a href="{{ url_for('main.set_language', lang='de') }}">🇩🇪</a>
+</span>
+```
+
+---
+
+### 6. الربط مع Jinja وقوالب `.j2`:
+- استخدام `{{ _('Text') }}` في كل النصوص القابلة للترجمة.
+- استخدام `{{ get_locale() }}` داخل HTML لتعريف اللغة النشطة.
+
+---
+
+## 📌 ملاحظات تقنية:
+- الجلسة مشفّرة وتُخزّن في Cookie.
+- لا حاجة لإعادة تمرير اللغة في كل رابط.
+- التبديل فوري، ويؤثر على كل الصفحات.
+
+---
+
+## 🔮 خطوات مستقبلية ممكنة:
+- ربط اللغة بالمستخدم المسجّل (تخزين في قاعدة البيانات).
+- عرض اللغة المختارة في ملف PDF التوليدي.
+- دعم Locale-specific formatting (مثل التاريخ والوقت).
+
+
+================================================
+FILE: step14/run.py
+================================================
+# step14/run.py
+
+from step14 import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",   # أو "127.0.0.1" إذا أردت تشغيله محليًا فقط
+        port=40514,       # يمكنك تغييره حسب ما يناسبك
+        debug=True        # اجعلها False في الإنتاج
+    )
+
+
+
+================================================
+FILE: step14/config/__init__.py
+================================================
+
+
+
+================================================
+FILE: step14/config/settings.py
+================================================
+import os
+
+class Config:
+    # هذا هو المسار المركزي الموحد
+    basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    db_path = os.path.join(basedir, 'instance', 'lebenslauf.db')
+
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev_key')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_path
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    DEBUG = True
+
+
+
+================================================
+FILE: step14/logic/__init__.py
+================================================
+
+
+
+================================================
+FILE: step14/logic/builder.py
+================================================
+import json
+from ..models.models import Setting
+
+def get_css_setting(key, default=""):
+    setting = Setting.query.filter_by(key=key).first()
+    if setting:
+        try:
+            css_dict = json.loads(setting.value.replace("'", '"'))
+            return "; ".join(f"{k}: {v}" for k, v in css_dict.items())
+        except:
+            return default
+    return default
+
+
+
+================================================
+FILE: step14/models/__init__.py
+================================================
+
+
+
+================================================
+FILE: step14/models/models.py
+================================================
+
+
+from ..extensions import db
+
+class Section(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order = db.Column(db.Integer, nullable=False) 
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=True)
+
+class Setting(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(100), unique=True, nullable=False)
+    value = db.Column(db.Text, nullable=False)
+
+
+
+================================================
+FILE: step14/routes/__init__.py
+================================================
+
+
+
+================================================
+FILE: step14/routes/admin_routes.py
+================================================
+from flask import Blueprint, render_template, request, redirect, url_for
+from ..models.models import db, Section, Setting  
+from flask_babel import force_locale
+from ..i18n_runtime import get_locale
+
+
+admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+@admin_bp.route("/sections", methods=["GET", "POST"])
+def manage_sections():
+    if request.method == "POST":
+        for section_id, content in request.form.items():
+            section = Section.query.get(int(section_id))
+            if section:
+                section.content = content
+        db.session.commit()
+        return redirect(url_for("admin.manage_sections"))
+
+    sections = Section.query.all()
+    return render_template("admin/sections.html.j2", sections=sections)
+
+
+
+import json
+
+@admin_bp.route("/settings", methods=["GET", "POST"])
+def manage_settings():
+    error = None
+
+    settings = Setting.query.all()  # نحتاجها لاحقًا داخل POST
+
+    if request.method == "POST":
+        try:
+            # إعداد خاص لـ section_title_css من الحقول المرئية
+            font_size = request.form.get("section_title_css_font_size")
+            color = request.form.get("section_title_css_color")
+            weight = request.form.get("section_title_css_weight")
+
+            css_json = {
+                "font-size": font_size,
+                "color": color,
+                "font-weight": weight
+            }
+
+            setting = Setting.query.filter_by(key="section_title_css").first()
+            if setting:
+                setting.value = json.dumps(css_json)
+
+            # إعداد خاص لـ paragraph_css
+            p_font_size = request.form.get("paragraph_css_font_size")
+            p_color = request.form.get("paragraph_css_color")
+
+            paragraph_css_json = {
+                "font-size": p_font_size,
+                "color": p_color
+            }
+
+            p_setting = Setting.query.filter_by(key="paragraph_css").first()
+            if p_setting:
+                p_setting.value = json.dumps(paragraph_css_json)
+
+            # إعداد خاص لـ body_font
+            body_font = request.form.get("body_font")
+            b_setting = Setting.query.filter_by(key="body_font").first()
+            if b_setting:
+                b_setting.value = body_font
+
+            # تجاهل الحقول المعالجة يدويًا
+            skip_keys = [
+                "section_title_css_font_size", "section_title_css_color", "section_title_css_weight",
+                "paragraph_css_font_size", "paragraph_css_color",
+                "body_font"
+            ]
+
+            for key, value in request.form.items():
+                if key in skip_keys:
+                    continue
+                s = Setting.query.filter_by(key=key).first()
+                if s:
+                    json.loads(value.replace("'", '"'))
+                    s.value = value
+
+            db.session.commit()
+            action = request.form.get("action")
+            if action == "save_and_preview":
+                return redirect(url_for("public.resume"))
+            return redirect(url_for("admin.manage_settings"))
+
+
+        except Exception as e:
+            error = f"❌ Fehler im JSON-Format: {str(e)}"
+
+    # إعدادات للعرض (GET)
+    section_title_css_data = {
+        "font-size": "20px",
+        "color": "#000000",
+        "font-weight": "normal"
+    }
+
+    paragraph_css_data = {
+        "font-size": "14px",
+        "color": "#444444"
+    }
+
+    body_font_value = "Arial, sans-serif"
+
+    for s in settings:
+        if s.key == "section_title_css":
+            try:
+                section_title_css_data = json.loads(s.value.replace("'", '"'))
+            except:
+                pass
+        elif s.key == "paragraph_css":
+            try:
+                paragraph_css_data = json.loads(s.value.replace("'", '"'))
+            except:
+                pass
+        elif s.key == "body_font":
+            body_font_value = s.value
+
+    with force_locale(get_locale()):
+        return render_template(
+            "admin/settings.html.j2",
+            settings=settings,
+            error=error,
+            section_title_css_data=section_title_css_data,
+            paragraph_css_data=paragraph_css_data,
+            body_font_value=body_font_value
+        )
+
+
+
+================================================
+FILE: step14/routes/main_routes.py
+================================================
+from flask import Blueprint, request, session, render_template, redirect, url_for
+from flask_babel import _
+from flask_babel import force_locale
+from ..i18n_runtime import get_locale
+
+
+
+main_bp = Blueprint("main", __name__)
+
+
+@main_bp.route("/")
+def home():
+    lang = get_locale()
+    with force_locale(lang):
+        print("🌐 Forced locale:", lang)
+        return render_template("home.html.j2", test=_("Select language:"))
+
+@main_bp.route('/set_language/<lang>')
+def set_language(lang):
+    session['lang'] = lang
+    return redirect(request.referrer or url_for('main.home'))  # يرجع للصفحة السابقة
+
+
+
+
+================================================
+FILE: step14/routes/public_routes.py
+================================================
+from flask import Blueprint, render_template
+from ..models.models import Section
+from ..logic.builder import get_css_setting
+
+public_bp = Blueprint("public", __name__)
+
+@public_bp.route("/resume")
+def resume():
+    sections = Section.query.all()
+    section_title_css = get_css_setting("section_title_css", "font-size: 20px; color: #000")
+    paragraph_css = get_css_setting("paragraph_css", "font-size: 14px; color: #444")
+    body_font = get_css_setting("body_font", "font-family: Arial, sans-serif")
+
+    return render_template(
+        "public/resume.html.j2",
+        sections=sections,
+        section_title_css=section_title_css,
+        paragraph_css=paragraph_css,
+        body_font=body_font
+    )
+
+
+
+================================================
+FILE: step14/static/css/resume.css
+================================================
+body {
+    margin: 40px;
+    font-family: Arial, sans-serif;
+}
+
+.section-title {
+    /* سيتم استبداله ديناميكيًا بالـ style="" لاحقًا */
+    border-bottom: 1px solid #ccc;
+    margin-top: 40px;
+}
+
+.section-content {
+    white-space: pre-wrap;
+    margin-top: 10px;
+}
+
+
+
+================================================
+FILE: step14/templates/base.html.j2
+================================================
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ _('Resume Project') }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resume.css') }}">
+</head>
+<body style="{{ body_font | default('font-family: Arial, sans-serif;') }}">
+
+    {% include 'partials/navbar.html.j2' %}
+
+    <main style="padding: 20px;">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/footer.html.j2' %}
+
+</body>
+</html>
+
+
+
+================================================
+FILE: step14/templates/home.html.j2
+================================================
+{% extends 'base.html.j2' %}
+
+{% block content %}
+    <h1>✅ {{ _('Resume Project gestartet erfolgreich!') }}</h1>
+    <p>{{ _('Welcome to your multilingual resume application.') }}</p>
+{% endblock %}
+
+
+
+================================================
+FILE: step14/templates/admin/sections.html.j2
+================================================
+{% extends "base.html.j2" %}
+
+{% block title %}{{ _('Manage Sections') }}{% endblock %}
+
+{% block content %}
+    <h1>📝 {{ _('Edit Resume Sections') }}</h1>
+    <form method="POST">
+        {% for section in sections %}
+            <h3>{{ section.title }}</h3>
+            <textarea name="{{ section.id }}" rows="4" cols="80">{{ section.content }}</textarea>
+            <hr>
+        {% endfor %}
+        <button type="submit">💾 {{ _('Save Changes') }}</button>
+    </form>
+{% endblock %}
+
+
+
+================================================
+FILE: step14/templates/admin/settings.html.j2
+================================================
+{% extends "base.html.j2" %}
+
+{% block title %}{{ _('Edit CSS Settings') }}{% endblock %}
+
+{% block content %}
+    <h1>🎨 {{ _('Resume Style Settings') }}</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+
+        <hr>
+        <h2>🔍 {{ _('Live Preview') }}</h2>
+
+        <div id="preview-box" style="padding: 20px; border: 1px dashed #aaa;">
+            <h2 id="preview-title">{{ _('Example Title') }}</h2>
+            <p id="preview-paragraph">{{ _('This is a sample section with example content.') }}</p>
+        </div>
+
+        <!-- section_title_css -->
+        <h3>{{ _('section_title_css') }}</h3>
+
+        <label>📏 {{ _('Font Size') }}:</label>
+        <select name="section_title_css_font_size">
+            {% for size in ["16px", "18px", "20px", "22px", "24px"] %}
+                <option value="{{ size }}" {% if section_title_css_data["font-size"] == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>🎨 {{ _('Color') }}:</label>
+        <input type="color" name="section_title_css_color" value="{{ section_title_css_data['color'] }}">
+
+        <br><br>
+
+        <label>🔠 {{ _('Font Weight') }}:</label>
+        <select name="section_title_css_weight">
+            {% for w in ["normal", "bold", "lighter"] %}
+                <option value="{{ w }}" {% if section_title_css_data["font-weight"] == w %}selected{% endif %}>{{ w.capitalize() }}</option>
+            {% endfor %}
+        </select>
+
+        <hr>
+
+        <!-- paragraph_css -->
+        <h3>{{ _('paragraph_css') }}</h3>
+
+        <label>📏 {{ _('Font Size') }}:</label>
+        <select name="paragraph_css_font_size">
+            {% for size in ["12px", "14px", "16px", "18px", "20px"] %}
+                <option value="{{ size }}" {% if paragraph_css_data["font-size"] == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>🎨 {{ _('Color') }}:</label>
+        <input type="color" name="paragraph_css_color" value="{{ paragraph_css_data['color'] }}">
+
+        <hr>
+
+        <!-- Other settings -->
+        {% for setting in settings %}
+            {% if setting.key != "section_title_css" and setting.key != "paragraph_css" %}
+                <h3>{{ _(setting.key) }}</h3>
+                <textarea name="{{ setting.key }}" rows="4" cols="80">{{ setting.value }}</textarea>
+                <hr>
+            {% endif %}
+        {% endfor %}
+
+        <button type="submit" name="action" value="save">💾 {{ _('Save Changes') }}</button>
+        <button type="submit" name="action" value="save_and_preview">💾 {{ _('Save & Show Preview') }}</button>
+
+    </form>
+
+    <script>
+    function updatePreview() {
+        const title = document.getElementById("preview-title");
+        const titleFontSize = document.querySelector("select[name='section_title_css_font_size']");
+        const titleColor = document.querySelector("input[name='section_title_css_color']");
+        const titleWeight = document.querySelector("select[name='section_title_css_weight']");
+        if (title && titleFontSize && titleColor && titleWeight) {
+            title.style.fontSize = titleFontSize.value;
+            title.style.color = titleColor.value;
+            title.style.fontWeight = titleWeight.value;
+        }
+
+        const para = document.getElementById("preview-paragraph");
+        const paraFontSize = document.querySelector("select[name='paragraph_css_font_size']");
+        const paraColor = document.querySelector("input[name='paragraph_css_color']");
+        if (para && paraFontSize && paraColor) {
+            para.style.fontSize = paraFontSize.value;
+            para.style.color = paraColor.value;
+        }
+
+        const bodyFont = document.querySelector("select[name='body_font']");
+        const previewBox = document.getElementById("preview-box");
+        if (bodyFont && previewBox) {
+            previewBox.style.fontFamily = bodyFont.value;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("select, input[type='color']").forEach(el => {
+            el.addEventListener("input", updatePreview);
+        });
+        updatePreview();
+    });
+    </script>
+{% endblock %}
+
+
+
+================================================
+FILE: step14/templates/partials/footer.html.j2
+================================================
+<footer style="background: #eee; text-align: center; padding: 20px; margin-top: 40px; font-size: 14px;">
+    © 2025 lebenslauf | {{ _('All rights reserved.') }}
+</footer>
+
+
+
+================================================
+FILE: step14/templates/partials/navbar.html.j2
+================================================
+<nav style="background: #333; color: white; padding: 10px 20px;">
+    <a href="{{ url_for('main.home') }}" style="color: white; margin-right: 20px;">🏠 {{ _('Home') }}</a>
+    <a href="{{ url_for('admin.manage_sections') }}" style="color: white; margin-right: 20px;">📝 {{ _('Sections') }}</a>
+    <a href="{{ url_for('admin.manage_settings') }}" style="color: white; margin-right: 20px;">🎨 {{ _('Settings') }}</a>
+    <a href="{{ url_for('public.resume') }}" style="color: white; margin-right: 20px;">📄 {{ _('Resume') }}</a>
+
+    <span style="float: right;">
+        <a href="{{ url_for('main.set_language', lang='ar') }}" style="color: white; margin-left: 10px;">🇸🇦</a>
+        <a href="{{ url_for('main.set_language', lang='en') }}" style="color: white; margin-left: 10px;">🇺🇸</a>
+        <a href="{{ url_for('main.set_language', lang='de') }}" style="color: white; margin-left: 10px;">🇩🇪</a>
+    </span>
+</nav>
+
+
+
+================================================
+FILE: step14/templates/public/resume.html.j2
+================================================
+{% extends "base.html.j2" %}
+
+{% block title %}{{ _('Resume') }}{% endblock %}
+
+{% block content %}
+    <h1>📄 {{ _('My Resume') }}</h1>
+
+    {% for section in sections %}
+        <h2 class="section-title" style="{{ section_title_css }}">{{ _(section.title) }}</h2>
+        <div class="section-content" style="{{ paragraph_css }}">{{ _(section.content) }}</div>
+    {% endfor %}
+{% endblock %}
+
+
+
+================================================
+FILE: step14/tools/init_db.py
+================================================
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from __init__ import create_app
+
+from models.models import db, Section, Setting
+
+app = create_app()
+
+with app.app_context():
+    db.drop_all()
+    db.create_all()
+
+    # إدخال بيانات أولية
+    sections = [
+        "Profil", "Karriereziel", "Bevorzugte Bereiche",
+        "Berufserfahrung", "Qualifikationen", "Technische Fähigkeiten",
+        "Sprachen", "Projekte", "Links", "Interessen"
+    ]
+
+    for title in sections:
+        db.session.add(Section(title=title, content=""))
+
+    db.session.add(Setting(key="section_title_css", value="{'font-size': '18px', 'color': '#000'}"))
+    db.session.commit()
+
+    print("✅ Datenbank initialisiert und mit Beispieldaten gefüllt.")
+
+
+
+================================================
+FILE: step14/translations/ar/LC_MESSAGES/messages.po
+================================================
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ar\n"
+
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-06-08 02:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: M:/lebenslauf/step11/routes/main_routes.py:14
+#: M:/lebenslauf/step11/templates/home.html:12
+#: M:/lebenslauf/step11/templates/home.html:16
+msgid "Select language:"
+msgstr "حدد اللغة:"
+
+#: M:/lebenslauf/step11/templates/home.html:5
+msgid "Resume Project"
+msgstr "استئناف المشروع"
+
+#: M:/lebenslauf/step11/templates/home.html:8
+msgid "Resume Project gestartet erfolgreich!"
+msgstr "استئناف مشروع الجستارت erfolgreich!"
+
+#: M:/lebenslauf/step11/templates/home.html:9
+msgid "Welcome to your multilingual resume application."
+msgstr "مرحبًا بك في تطبيق السيرة الذاتية متعددة اللغات."
+
+#: M:/lebenslauf/step11/templates/admin/sections.html:5
+msgid "Manage Sections"
+msgstr "إدارة الأقسام"
+
+#: M:/lebenslauf/step11/templates/admin/sections.html:8
+msgid "Edit Resume Sections"
+msgstr "تحرير الأقسام السيرة الذاتية"
+
+#: M:/lebenslauf/step11/templates/admin/sections.html:15
+#: M:/lebenslauf/step11/templates/admin/settings.html:76
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:5
+msgid "Edit CSS Settings"
+msgstr "تحرير إعدادات CSS"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:8
+msgid "Resume Style Settings"
+msgstr "استئناف إعدادات النمط"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:17
+msgid "Live Preview"
+msgstr "معاينة حية"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:20
+msgid "Example Title"
+msgstr "مثال العنوان"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:21
+msgid "This is a sample section with example content."
+msgstr "هذا قسم عينة مع مثال محتوى."
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:25
+msgid "section_title_css"
+msgstr "section_title_css"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:27
+#: M:/lebenslauf/step11/templates/admin/settings.html:53
+msgid "Font Size"
+msgstr "حجم الخط"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:36
+#: M:/lebenslauf/step11/templates/admin/settings.html:62
+msgid "Color"
+msgstr "لون"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:41
+msgid "Font Weight"
+msgstr "وزن الخط"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:51
+msgid "paragraph_css"
+msgstr "الفقرة"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:77
+msgid "Save & Show Preview"
+msgstr "معاينة حفظ وإظهار"
+
+
+
+================================================
+FILE: step14/translations/de/LC_MESSAGES/messages.po
+================================================
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: de\n"
+
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-06-08 02:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: M:/lebenslauf/step11/routes/main_routes.py:14
+#: M:/lebenslauf/step11/templates/home.html:12
+#: M:/lebenslauf/step11/templates/home.html:16
+msgid "Select language:"
+msgstr "Sprache auswählen:"
+
+#: M:/lebenslauf/step11/templates/home.html:5
+msgid "Resume Project"
+msgstr "Projekt wieder aufnehmen"
+
+#: M:/lebenslauf/step11/templates/home.html:8
+msgid "Resume Project gestartet erfolgreich!"
+msgstr "Lebenslauf Projekt Gestartett Erfolgreich!"
+
+#: M:/lebenslauf/step11/templates/home.html:9
+msgid "Welcome to your multilingual resume application."
+msgstr "Willkommen bei Ihrer mehrsprachigen Lebenslaufanwendung."
+
+#: M:/lebenslauf/step11/templates/admin/sections.html:5
+msgid "Manage Sections"
+msgstr "Abschnitte verwalten"
+
+#: M:/lebenslauf/step11/templates/admin/sections.html:8
+msgid "Edit Resume Sections"
+msgstr "Lebenslaufabschnitte bearbeiten"
+
+#: M:/lebenslauf/step11/templates/admin/sections.html:15
+#: M:/lebenslauf/step11/templates/admin/settings.html:76
+msgid "Save Changes"
+msgstr "Änderungen speichern"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:5
+msgid "Edit CSS Settings"
+msgstr "Bearbeiten Sie die CSS -Einstellungen"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:8
+msgid "Resume Style Settings"
+msgstr "Lebenslauf -Stileinstellungen"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:17
+msgid "Live Preview"
+msgstr "Live -Vorschau"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:20
+msgid "Example Title"
+msgstr "Beispieltitel"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:21
+msgid "This is a sample section with example content."
+msgstr "Dies ist ein Beispielabschnitt mit Beispielinhalt."
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:25
+msgid "section_title_css"
+msgstr "Abschnitt_title_css"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:27
+#: M:/lebenslauf/step11/templates/admin/settings.html:53
+msgid "Font Size"
+msgstr "Schriftgröße"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:36
+#: M:/lebenslauf/step11/templates/admin/settings.html:62
+msgid "Color"
+msgstr "Farbe"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:41
+msgid "Font Weight"
+msgstr "Schriftgewicht"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:51
+msgid "paragraph_css"
+msgstr "Abschnitt_CSS"
+
+#: M:/lebenslauf/step11/templates/admin/settings.html:77
+msgid "Save & Show Preview"
+msgstr "Vorschau speichern und anzeigen"
+
+
